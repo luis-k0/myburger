@@ -2,12 +2,19 @@ import React from 'react'
 import Aux from '../../../hoc/Auxiliar'
 import Button from '../../UI/Button/Button'
 
+const translate = {
+    salad: "Salada",
+    bacon: "Bacon",
+    cheese: "Queijo",
+    meat: "Carne"
+}
+
 const orderSummary = (props) => {
     const ingredientSummary = Object.keys(props.ingredients)
         .map(igKey => {
             return (
                 <li key={igKey}>
-                    <span style={{textTransform: 'capitalize'}}>{igKey}</span>: {props.ingredients[igKey]}
+                    <span style={{textTransform: 'capitalize'}}>{translate[igKey]}</span>: {props.ingredients[igKey]}
                 </li>
             )
         })
