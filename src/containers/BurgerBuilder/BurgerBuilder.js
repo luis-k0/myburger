@@ -30,15 +30,19 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount() {
-        axios.get('/ingredients.json',)
+        axios.get('/ingredients2.json')
             .then(response => {
-                // depois tentar ordenar os ingredientes colocando a salada por cima
-                // console.log(response);
-                // console.log(Object.keys(response.data));
-                this.setState({ ingredients: response.data });
+                let ingredientsLoaded = {};
+                // for (let index = 0; index < Object.keys(response.data).length; index++) {
+                //     Object.assign(ingredientsLoaded, response.data[Object.keys(response.data)[index]]);
+                // }
+                Object.keys(response.data).forEach((current, index) => {Object.assign(ingredientsLoaded, response.data[Object.keys(response.data)[index]])});
+                console.log(ingredientsLoaded);
+                //this.setState({ ingredients: response.data });
+                this.setState({ ingredients: ingredientsLoaded });
             })
             .catch(error => {
-                this.setState({error: true})
+                this.setState({ error: true })
             });
     }
 
