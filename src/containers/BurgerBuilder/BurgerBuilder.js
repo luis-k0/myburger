@@ -36,7 +36,10 @@ class BurgerBuilder extends Component {
                 // for (let index = 0; index < Object.keys(response.data).length; index++) {
                 //     Object.assign(ingredientsLoaded, response.data[Object.keys(response.data)[index]]);
                 // }
-                Object.keys(response.data).forEach((current, index) => {Object.assign(ingredientsLoaded, response.data[Object.keys(response.data)[index]])});
+                Object.keys(response.data)
+                    .forEach(
+                        (current, index) => { Object.assign(ingredientsLoaded, response.data[Object.keys(response.data)[index]]) }
+                    );
                 console.log(ingredientsLoaded);
                 //this.setState({ ingredients: response.data });
                 this.setState({ ingredients: ingredientsLoaded });
