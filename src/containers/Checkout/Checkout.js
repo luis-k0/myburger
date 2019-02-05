@@ -17,7 +17,7 @@ class Checkout extends Component {
         let price = 0;
         for (let param of query.entries()) {
             // parametro price não é um ingrediente e por isso não vai para o ingredients
-            if (param[0] === 'price'){
+            if (param[0] === 'price') {
                 price = param[1];
             } else {
                 ingredients[param[0]] = +param[1];
@@ -43,9 +43,20 @@ class Checkout extends Component {
                     checkoutContinued={this.checkoutContinuedHandler}
                 />
                 {/* por causa do render o objeto history não estará disponível no ContactData */}
+                {/* o parametro props no render faz com que o props do checkout seja passado para o ContactData */}
                 <Route
                     path={this.props.match.path + '/contact-data'}
-                    render={(props) => (<ContactData ingredients={this.state.ingredients} price={this.state.price} {...props} />)}  />
+                    render={
+                        (props) =>
+                            (
+                                <ContactData
+                                    ingredients={this.state.ingredients}
+                                    price={this.state.price}
+                                    {...props}
+                                />
+                            )
+                    }
+                />
             </div>
         )
     }
