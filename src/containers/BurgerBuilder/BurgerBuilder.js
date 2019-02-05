@@ -30,13 +30,14 @@ class BurgerBuilder extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props);
         axios.get('/ingredients2.json')
             .then(response => {
                 let ingredientsLoaded = {};
                 // for (let index = 0; index < Object.keys(response.data).length; index++) {
                 //     Object.assign(ingredientsLoaded, response.data[Object.keys(response.data)[index]]);
                 // }
-                console.log(Object.keys(response.data));
+                // console.log(Object.keys(response.data));
                 Object.keys(response.data)
                     .forEach(
                         (_, index) => { Object.assign(ingredientsLoaded, response.data[Object.keys(response.data)[index]]) }
@@ -59,29 +60,19 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        // alert('Você continuou!')
-        this.setState({ loading: true });
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Luis K',
-                address: {
-                    street: 'Teste Street',
-                    zip: '93944',
-                    country: 'Brazil'
-                },
-                email: 'luisk@teste.com'
-            },
-            deliveryMethod: 'fastest'
+        const queryParams = [];
+        // separando os ingredientes do objeto do state em um array no formato da querystring
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
         }
-        axios.post('/orders.json', order)
-            .then(response => {
-                this.setState({ loading: false, purchasing: false });
-            })
-            .catch(error => {
-                this.setState({ loading: false, purchasing: false });
-            });
+        // incluindo o preço na querystring
+        queryParams.push('price=' + this.state.totalPrice);
+        // juntando os ingredientes do array e montando a querystring para passar para o checkout
+        const queryString = queryParams.join('&')
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString
+        });
     }
 
     updatePurchaseState(ingredients) {
