@@ -30,8 +30,8 @@ class ContactData extends Component {
         value: "",
         validation: {
           required: true,
-          minLenght: 5,
-          maxLenght: 8
+          minLength: 5,
+          maxLength: 8
         },
         valid: false
       },
@@ -115,18 +115,18 @@ class ContactData extends Component {
   };
 
   checkValidity(value, rules) {
-    let isValid = false;
+    let isValid = true;
 
     if (rules.required) {
-      isValid = value.trim() !== "";
+      isValid = value.trim() !== "" && isValid;
     }
 
-    if (rules.minLenght) {
-      isValid = value.lenght >= rules.minLenght;
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid;
     }
 
-    if (rules.maxLenght) {
-      isValid = value.lenght <= rules.maxLenght;
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength && isValid;
     }
     return isValid;
   }
@@ -173,6 +173,8 @@ class ContactData extends Component {
             elementType={formElement.config.elementType}
             elementConfig={formElement.config.elementConfig}
             value={formElement.config.value}
+            invalid={!formElement.config.valid}
+            shouldValidate={formElement.config.validation}
             changed={event => this.inputChangedHandler(event, formElement.id)}
           />
         ))}
