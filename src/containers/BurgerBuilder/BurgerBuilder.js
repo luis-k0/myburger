@@ -9,7 +9,8 @@ import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import axios from "../../axios-orders";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-import * as actionTypes from "../../store/actions/actionTypes";
+// import * as actionTypes from "../../store/actions/actionTypes"; // substituído por abaixo
+import * as burgerBuilderActions from "../../store/actions/index"; // index pode ser omitido
 
 // movido para o reducer
 // const INGREDIENT_PRICES = {
@@ -216,9 +217,11 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onIngredientAdded: ingName =>
-      dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientName: ingName }),
+      // dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientName: ingName }), // substituído pelo action abaxo
+      dispatch(burgerBuilderActions.addIngredient(ingName)),
     onIngredientRemoved: ingName =>
-      dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingName })
+      // dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingName }) // substitído pelo action abaixo
+      dispatch(burgerBuilderActions.removeIngredient(ingName))
   };
 };
 
