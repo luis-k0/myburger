@@ -2,24 +2,28 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware, compose } from "redux"; // applyMiddleware e compose usado com redux-thunk
+import { createStore, applyMiddleware, compose, combineReducers } from "redux"; // applyMiddleware e compose usado com redux-thunk
 import thunk from "redux-thunk";
 
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import burgerBuilderReducer from "./store/reducers/burgerBuilder";
+import orderReducer from "./store/reducers/order";
 
 // para que o redux devtools funcione
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
+const rootReducer = combineReducers({
+  burgerBuilder: burgerBuilderReducer,
+  order: orderReducer
+});
+
 // second parameter is to include redux devtools to the project
 // segundo parâmetro é para incluir o redux devtools no projeto
 const store = createStore(
-  burgerBuilderReducer,
-  composeEnhancers(
-    applyMiddleware( thunk )
-  )
+  rootReducer, //burgerBuilderReducer,
+  composeEnhancers(applyMiddleware(thunk))
 );
 
 const app = (
