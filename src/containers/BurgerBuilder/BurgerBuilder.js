@@ -10,7 +10,7 @@ import axios from "../../axios-orders";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 // import * as actionTypes from "../../store/actions/actionTypes"; // substituído por abaixo
-import * as burgerBuilderActions from "../../store/actions/index"; // index pode ser omitido
+import * as actions from "../../store/actions/index"; // index pode ser omitido
 
 // movido para o reducer
 // const INGREDIENT_PRICES = {
@@ -90,6 +90,7 @@ class BurgerBuilder extends Component {
     // });
     // retirado devido ao redux, querystring não é mais necessário - fim
 
+    this.props.onInitPurchase();
     this.props.history.push("/checkout");
   };
 
@@ -221,11 +222,12 @@ const mapDispatchToProps = dispatch => {
   return {
     onIngredientAdded: ingName =>
       // dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientName: ingName }), // substituído pelo action abaxo
-      dispatch(burgerBuilderActions.addIngredient(ingName)),
+      dispatch(actions.addIngredient(ingName)),
     onIngredientRemoved: ingName =>
       // dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingName }) // substitído pelo action abaixo
-      dispatch(burgerBuilderActions.removeIngredient(ingName)),
-    onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
+      dispatch(actions.removeIngredient(ingName)),
+    onInitIngredients: () => dispatch(actions.initIngredients()),
+    onInitPurchase: () => dispatch(actions.purchaseInit())
   };
 };
 

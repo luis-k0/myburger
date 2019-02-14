@@ -4,8 +4,13 @@ import { connect } from "react-redux";
 
 import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSummary";
 import ContactData from "../Checkout/ContactData/ContactData";
+// import * as actions from "../../store/actions/index";
 
 class Checkout extends Component {
+  // componentWillMount() { // comentado porque é o evento errado para iniciar o purchase
+  //   this.props.onInitPurchase();
+  // }
+
   // retirado por que o state está no redux - início
   // state = {
   //     ingredients: null,
@@ -40,8 +45,12 @@ class Checkout extends Component {
   render() {
     let summary = <Redirect to="/" />;
     if (this.props.ings) {
+      const purchaseRedirect = this.props.purchased ? (
+        <Redirect to="/" />
+      ) : null;
       summary = (
         <div>
+          {purchaseRedirect}
           <CheckoutSummary
             // ingredients={this.state.ingredients}
             ingredients={this.props.ings}
@@ -74,9 +83,16 @@ class Checkout extends Component {
 
 const mapStateToProps = state => {
   return {
-    ings: state.burgerBuilder.ingredients
+    ings: state.burgerBuilder.ingredients,
+    purchased: state.order.purchased
   };
 };
+
+// const mapDispatchToProps = dispatch => { // purchase não será iniciado aqui
+//   return {
+//     onInitPurchase: () => dispatch(actions.purchaseInit())
+//   };
+// };
 
 // mapDispatchToProps não é obrigatório
 export default connect(mapStateToProps)(Checkout);
