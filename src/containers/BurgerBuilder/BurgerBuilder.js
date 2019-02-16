@@ -61,7 +61,12 @@ class BurgerBuilder extends Component {
   }
 
   purchaseHandler = () => {
-    this.setState({ purchasing: true });
+    if (this.props.isAuthenticated) {
+      this.setState({ purchasing: true });
+    } else {
+      this.props.onSetAuthRedirectPath("/checkout");
+      this.props.history.push("/auth");
+    }
   };
 
   purchaseCancelHandler = () => {
@@ -69,7 +74,7 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    // retirado devido ao redux, querystring não é mais necessário - início
+    // retirado devido ao redux, querystring não é mais necessário, informação está no state do redux - início
     // const queryParams = [];
     // // separando os ingredientes do objeto do state em um array no formato da querystring
     // for (let i in this.state.ingredients) {
@@ -177,6 +182,7 @@ class BurgerBuilder extends Component {
             ordered={this.purchaseHandler}
             // price={this.state.totalPrice} // substituido pelo state do redux
             price={this.props.price}
+            isAuth={this.props.isAuthenticated}
           />
         </Aux>
       );
@@ -214,7 +220,8 @@ const mapStateToProps = state => {
   return {
     ings: state.burgerBuilder.ingredients, // burgerBuilder é o nome do reducer combinado que está no index.js
     price: state.burgerBuilder.totalPrice,
-    error: state.burgerBuilder.error
+    error: state.burgerBuilder.error,
+    isAuthenticated: state.auth.token !== null
   };
 };
 
@@ -227,7 +234,8 @@ const mapDispatchToProps = dispatch => {
       // dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingName }) // substitído pelo action abaixo
       dispatch(actions.removeIngredient(ingName)),
     onInitIngredients: () => dispatch(actions.initIngredients()),
-    onInitPurchase: () => dispatch(actions.purchaseInit())
+    onInitPurchase: () => dispatch(actions.purchaseInit()),
+    onSetAuthRedirectPath: path => dispatch(actions.setAuthRedirectPath(path))
   };
 };
 
