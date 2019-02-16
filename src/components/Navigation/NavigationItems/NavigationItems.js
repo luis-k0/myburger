@@ -8,7 +8,11 @@ const navigationItems = props => (
       Burger Builder
     </NavigationItem>
     <NavigationItem link="/orders">Pedidos</NavigationItem>
-    <NavigationItem link="/auth">Autenticar</NavigationItem>
+    {props.isAuthenticated ? (
+      <NavigationItem link="/logout">Logout</NavigationItem>
+    ) : (
+      <NavigationItem link="/auth">Autenticar</NavigationItem>
+    )}
   </ul>
 );
 
