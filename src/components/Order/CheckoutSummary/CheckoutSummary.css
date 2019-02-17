@@ -1,11 +1,12 @@
 .CheckoutSummary {
-    text-align: center;
-    width: 80%;
-    margin: auto;
+  text-align: center;
+  width: 80%;
+  margin: auto;
 }
-
+/* 
+it was an aligment error
 @media (min-width: 600px) {
     .CheckoutSummary {
         width: 500px;
     }
-}
+} */

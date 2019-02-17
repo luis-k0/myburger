@@ -8,6 +8,7 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../../store/actions/index";
+import { updateObject } from "../../../shared/utility";
 
 class ContactData extends Component {
   state = {
@@ -168,22 +169,42 @@ class ContactData extends Component {
     // console.log(event.target.value);
     // criando um clone do orderForm com spread(...), pois com = cria uma referência ao objeto
     // sendo igual a alterar o state diretamente
-    const updatedOrderForm = {
-      ...this.state.orderForm
-    };
-    // cria um clone do elemento a ser alterado (email, name...)
-    // pois o spread/clone só clona 1 nível, o spread acima clonou email, name, address...
-    // o spread abaixo clona o 1 nível dos dados do elemento a ser alterado
-    const updateFormElement = {
-      ...updatedOrderForm[inputIdentifier]
-    };
-    updateFormElement.value = event.target.value; // alterando o value no elemento clonado
-    updateFormElement.valid = this.checkValidity(
-      updateFormElement.value,
-      updateFormElement.validation
+
+    // INÍCIO - refatorando com updateObject
+    // const updatedOrderForm = {
+    //   ...this.state.orderForm
+    // };
+    // // cria um clone do elemento a ser alterado (email, name...)
+    // // pois o spread/clone só clona 1 nível, o spread acima clonou email, name, address...
+    // // o spread abaixo clona o 1 nível dos dados do elemento a ser alterado
+    // const updateFormElement = {
+    //   ...updatedOrderForm[inputIdentifier]
+    // };
+    // updateFormElement.value = event.target.value; // alterando o value no elemento clonado
+    // updateFormElement.valid = this.checkValidity(
+    //   updateFormElement.value,
+    //   updateFormElement.validation
+    // );
+    // updateFormElement.touched = true;
+    // updatedOrderForm[inputIdentifier] = updateFormElement; // alterado o elemento no clone o orderForm do state
+    // FIM - refatorando com updateObject
+
+    const updateFormElement = updateObject(
+      this.state.orderForm[inputIdentifier],
+      {
+        value: event.target.value,
+        valid: this.checkValidity(
+          event.target.value,
+          this.state.orderForm[inputIdentifier].validation
+        ),
+        touched: true
+      }
     );
-    updateFormElement.touched = true;
-    updatedOrderForm[inputIdentifier] = updateFormElement; // alterado o elemento no clone o orderForm do state
+
+    const updatedOrderForm = updateObject(this.state.orderForm, {
+      [inputIdentifier]: updateFormElement
+    });
+
     // console.log(updateFormElement);
 
     // verificando se todos os campos são válidos
