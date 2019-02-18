@@ -13,7 +13,14 @@ import orderReducer from "./store/reducers/order";
 import authReducer from "./store/reducers/auth";
 
 // para que o redux devtools funcione
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// process.env.NODE_ENV === 'development' verificar se está em ambiente de desenvolvimento
+// variável está em config/env.js
+// para só liberar o redux devtools em desenvolvimento
+// para que o dev tools não mostre o state em produção
+const composeEnhancers =
+  process.env.NODE_ENV === "development"
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    : null || compose;
 
 const rootReducer = combineReducers({
   burgerBuilder: burgerBuilderReducer,
