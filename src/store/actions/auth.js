@@ -24,20 +24,33 @@ export const authFail = error => {
 
 export const logout = () => {
   // removing information from localstorage
-  localStorage.removeItem("token");
-  localStorage.removeItem("expirationDate");
-  localStorage.removeItem("userId");
+  // commented with the introduction of redux-saga
+  // localStorage.removeItem("token");
+  // localStorage.removeItem("expirationDate");
+  // localStorage.removeItem("userId");
+  return {
+    // type: actionTypes.AUTH_LOGOUT // commented with the introduction of redux-saga
+    type: actionTypes.AUTH_INITIATE_LOGOUT
+  };
+};
+
+export const logoutSucceed = () => {
   return {
     type: actionTypes.AUTH_LOGOUT
   };
 };
 
 export const checkAuthTimeout = expirationTime => {
-  return dispatch => {
-    setTimeout(() => {
-      dispatch(logout());
-    }, expirationTime * 1000);
+  return {
+    type: actionTypes.AUTH_CHECK_TIMEOUT,
+    expirationTime: expirationTime
   };
+  // commented with introduction of redux-saga
+  // return dispatch => {
+  //   setTimeout(() => {
+  //     dispatch(logout());
+  //   }, expirationTime * 1000);
+  // };
 };
 
 export const auth = (email, password, isSignup) => {

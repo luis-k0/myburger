@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose, combineReducers } from "redux"; // applyMiddleware e compose usado com redux-thunk
 import thunk from "redux-thunk";
+import createSagaMiddleware from "redux-saga";
 
 import "./index.css";
 import App from "./App";
@@ -11,6 +12,8 @@ import * as serviceWorker from "./serviceWorker";
 import burgerBuilderReducer from "./store/reducers/burgerBuilder";
 import orderReducer from "./store/reducers/order";
 import authReducer from "./store/reducers/auth";
+// import { logoutSaga } from "./store/sagas/auth"; // is no longer needed
+import { watchAuth } from "./store/sagas"; //importing index.js which is default
 
 // para que o redux devtools funcione
 // process.env.NODE_ENV === 'development' verificar se está em ambiente de desenvolvimento
@@ -28,12 +31,17 @@ const rootReducer = combineReducers({
   auth: authReducer
 });
 
+const sagaMiddleware = createSagaMiddleware();
+
 // second parameter is to include redux devtools to the project
 // segundo parâmetro é para incluir o redux devtools no projeto
 const store = createStore(
   rootReducer, //burgerBuilderReducer,
-  composeEnhancers(applyMiddleware(thunk))
+  composeEnhancers(applyMiddleware(thunk, sagaMiddleware))
 );
+
+// sagaMiddleware.run(logoutSaga); // created just for test
+sagaMiddleware.run(watchAuth);
 
 const app = (
   <Provider store={store}>
