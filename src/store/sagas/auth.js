@@ -52,3 +52,27 @@ export function* authUserSaga(action) {
     // });
   }
 }
+
+export function* authCheckStateSaga(action) {
+  const token = yield localStorage.getItem("token"); // const token = localStorage.getItem("token");
+  if (!token) {
+    yield put(actions.logout()); // dispatch(logout());
+  } else {
+    const expirationDate = yield new Date(
+      localStorage.getItem("expirationDate")
+    ); // const expirationDate = new Date(localStorage.getItem("expirationDate"));
+    if (expirationDate > new Date()) {
+      const localId = yield localStorage.getItem("localId"); // const localId = localStorage.getItem("localId");
+      yield put(actions.authSuccess(token, localId)); // dispatch(authSuccess(token, localId));
+      yield put(
+        // dispatch(
+        actions.checkAuthTimeout(
+          // checkAuthTimeout(
+          (expirationDate.getTime() - new Date().getTime()) / 1000 // calculating in seconds
+        )
+      );
+    } else {
+      yield put(actions.logout()); // dispatch(logout());
+    }
+  }
+}

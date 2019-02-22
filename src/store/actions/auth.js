@@ -101,23 +101,26 @@ export const setAuthRedirectPath = path => {
 };
 
 export const authCheckState = () => {
-  return dispatch => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      dispatch(logout());
-    } else {
-      const expirationDate = new Date(localStorage.getItem("expirationDate"));
-      if (expirationDate > new Date()) {
-        const localId = localStorage.getItem("localId");
-        dispatch(authSuccess(token, localId));
-        dispatch(
-          checkAuthTimeout(
-            (expirationDate.getTime() - new Date().getTime()) / 1000 // calculating in seconds
-          )
-        );
-      } else {
-        dispatch(logout());
-      }
-    }
+  return {
+    type: actionTypes.AUTH_CHECK_STATE
   };
+  // return dispatch => {
+  // const token = localStorage.getItem("token");
+  // if (!token) {
+  //   dispatch(logout());
+  // } else {
+  //   const expirationDate = new Date(localStorage.getItem("expirationDate"));
+  //   if (expirationDate > new Date()) {
+  //     const localId = localStorage.getItem("localId");
+  //     dispatch(authSuccess(token, localId));
+  //     dispatch(
+  //       checkAuthTimeout(
+  //         (expirationDate.getTime() - new Date().getTime()) / 1000 // calculating in seconds
+  //       )
+  //     );
+  //   } else {
+  //     dispatch(logout());
+  //   }
+  // }
+  // };
 };
