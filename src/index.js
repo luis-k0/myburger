@@ -13,7 +13,7 @@ import burgerBuilderReducer from "./store/reducers/burgerBuilder";
 import orderReducer from "./store/reducers/order";
 import authReducer from "./store/reducers/auth";
 // import { logoutSaga } from "./store/sagas/auth"; // is no longer needed
-import { watchAuth } from "./store/sagas"; //importing index.js which is default
+import { watchAuth, watchBurgerBuilder, watchOrder } from "./store/sagas"; //importing index.js which is default
 
 // para que o redux devtools funcione
 // process.env.NODE_ENV === 'development' verificar se está em ambiente de desenvolvimento
@@ -42,6 +42,8 @@ const store = createStore(
 
 // sagaMiddleware.run(logoutSaga); // created just for test
 sagaMiddleware.run(watchAuth);
+sagaMiddleware.run(watchBurgerBuilder);
+sagaMiddleware.run(watchOrder);
 
 const app = (
   <Provider store={store}>

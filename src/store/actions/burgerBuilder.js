@@ -1,5 +1,5 @@
 import * as actionTypes from "./actionTypes";
-import axios from "../../axios-orders";
+// import axios from "../../axios-orders"; // no longer used with saga
 
 export const addIngredient = name => {
   return {
@@ -29,23 +29,26 @@ export const fetchIngredientsFailed = () => {
 };
 
 export const initIngredients = () => {
-  return dispatch => {
-    axios
-      .get("/ingredients2.json")
-      .then(response => {
-        let ingredientsLoaded = {};
-        Object.keys(response.data).forEach((_, index) => {
-          Object.assign(
-            ingredientsLoaded,
-            response.data[Object.keys(response.data)[index]]
-          );
-        });
-        // this.setState({ ingredients: ingredientsLoaded });
-        dispatch(setIngredients(ingredientsLoaded));
-      })
-      .catch(error => {
-        // this.setState({ error: true });
-        dispatch(fetchIngredientsFailed());
-      });
+  return {
+    type: actionTypes.INIT_INGREDIENTS
   };
+  // return dispatch => {
+  //   axios
+  //     .get("/ingredients2.json")
+  //     .then(response => {
+  //       let ingredientsLoaded = {};
+  //       Object.keys(response.data).forEach((_, index) => {
+  //         Object.assign(
+  //           ingredientsLoaded,
+  //           response.data[Object.keys(response.data)[index]]
+  //         );
+  //       });
+  //       // this.setState({ ingredients: ingredientsLoaded });
+  //       dispatch(setIngredients(ingredientsLoaded));
+  //     })
+  //     .catch(error => {
+  //       // this.setState({ error: true });
+  //       dispatch(fetchIngredientsFailed());
+  //     });
+  // };
 };
