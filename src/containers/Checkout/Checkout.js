@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -6,7 +6,8 @@ import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSumm
 import ContactData from "../Checkout/ContactData/ContactData";
 // import * as actions from "../../store/actions/index";
 
-class Checkout extends Component {
+// class Checkout extends Component {
+const checkout = props => {
   // componentWillMount() { // comentado porque é o evento errado para iniciar o purchase
   //   this.props.onInitPurchase();
   // }
@@ -34,52 +35,50 @@ class Checkout extends Component {
   // }
   // retirado por que o state está no redux - fim
 
-  checkoutCancelledHandler = () => {
-    this.props.history.goBack();
+  const checkoutCancelledHandler = () => {
+    props.history.goBack();
   };
 
-  checkoutContinuedHandler = () => {
-    this.props.history.replace("/checkout/contact-data");
+  const checkoutContinuedHandler = () => {
+    props.history.replace("/checkout/contact-data");
   };
 
-  render() {
-    let summary = <Redirect to="/" />;
-    if (this.props.ings) {
-      const purchaseRedirect = this.props.purchased ? (
-        <Redirect to="/" />
-      ) : null;
-      summary = (
-        <div>
-          {purchaseRedirect}
-          <CheckoutSummary
-            // ingredients={this.state.ingredients}
-            ingredients={this.props.ings}
-            checkoutCancelled={this.checkoutCancelledHandler}
-            checkoutContinued={this.checkoutContinuedHandler}
-          />
-          {/* por causa do render o objeto history não estará disponível no ContactData */}
-          {/* o parametro props no render faz com que o props do checkout seja passado para o ContactData */}
-          <Route
-            path={this.props.match.path + "/contact-data"}
-            component={ContactData}
-            // não é necessário com o redux, ingredients e price estão no state global
-            // render={
-            //     (props) =>
-            //         (
-            //             <ContactData
-            //                 ingredients={this.state.ingredients}
-            //                 price={this.state.price}
-            //                 {...props}
-            //             />
-            //         )
-            // }
-          />
-        </div>
-      );
-    }
-    return summary;
+  // render() {
+  let summary = <Redirect to="/" />;
+  if (props.ings) {
+    const purchaseRedirect = props.purchased ? <Redirect to="/" /> : null;
+    summary = (
+      <div>
+        {purchaseRedirect}
+        <CheckoutSummary
+          // ingredients={this.state.ingredients}
+          ingredients={props.ings}
+          checkoutCancelled={checkoutCancelledHandler}
+          checkoutContinued={checkoutContinuedHandler}
+        />
+        {/* por causa do render o objeto history não estará disponível no ContactData */}
+        {/* o parametro props no render faz com que o props do checkout seja passado para o ContactData */}
+        <Route
+          path={props.match.path + "/contact-data"}
+          component={ContactData}
+          // não é necessário com o redux, ingredients e price estão no state global
+          // render={
+          //     (props) =>
+          //         (
+          //             <ContactData
+          //                 ingredients={this.state.ingredients}
+          //                 price={this.state.price}
+          //                 {...props}
+          //             />
+          //         )
+          // }
+        />
+      </div>
+    );
   }
-}
+  return summary;
+  // }
+};
 
 const mapStateToProps = state => {
   return {
@@ -95,4 +94,4 @@ const mapStateToProps = state => {
 // };
 
 // mapDispatchToProps não é obrigatório
-export default connect(mapStateToProps)(Checkout);
+export default connect(mapStateToProps)(checkout);

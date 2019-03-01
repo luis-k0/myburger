@@ -1,3 +1,6 @@
+// lazy loading have a new react component called React.lazy
+// this function isn't necessary
+
 import React, { Component } from "react";
 
 const asyncComponent = importComponent => {
